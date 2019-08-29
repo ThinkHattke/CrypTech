@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 28
@@ -25,4 +27,32 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.material:material:1.0.0-beta01'
+
+    //Text AutoScale
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'
+
+    //Logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Animation library
+    implementation 'br.com.simplepass:loading-button-android:2.1.5'
+    implementation 'com.airbnb.android:lottie:3.0.7'
+
+    //Image processing
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Serialization
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    //Retrofit Library
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+
+}
+repositories {
+    mavenCentral()
 }
