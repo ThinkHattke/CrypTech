@@ -27,7 +27,7 @@ class Login : AppCompatActivity() {
         register = findViewById(R.id.register)
         login = findViewById(R.id.imageView2)
 
-        login.setOnClickListener {  }
+        login.setOnClickListener { startActivity(Intent(this@Login, Verify::class.java)) }
 
         register.setOnClickListener { startActivity(Intent(this@Login, Register::class.java)) }
 

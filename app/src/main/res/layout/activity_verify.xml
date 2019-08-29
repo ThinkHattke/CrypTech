@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".Auth.Verify">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan QR Code"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_23sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:gravity="center"
+        android:id="@+id/textView3"
+        android:layout_below="@id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ask the event volunteer to scan the QR code to proceed further"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="normal" />
+
+    <RelativeLayout
+        android:layout_below="@id/textView3"
+        android:layout_marginTop="40dp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="45dp"
+        android:layout_height="match_parent">
+
+
+
+        <fragment
+            android:id="@+id/barcode_scanner"
+            android:name="info.androidhive.barcode.BarcodeReader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:auto_focus="true"
+            app:use_flash="false" />
+
+        <info.androidhive.barcode.ScannerOverlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            app:line_color="#4CAF50"
+            app:line_speed="6"
+            app:line_width="4"
+            app:square_height="200"
+            app:square_width="200" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
