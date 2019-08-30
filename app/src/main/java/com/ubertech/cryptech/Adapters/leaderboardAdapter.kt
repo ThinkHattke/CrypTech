@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ubertech.cryptech.API.Response.leaderboardUser
+import com.ubertech.cryptech.API.Models.Response.leaderboardUser
 import com.ubertech.cryptech.R
 import java.util.ArrayList
 
