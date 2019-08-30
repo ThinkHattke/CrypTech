@@ -2,10 +2,10 @@ package com.ubertech.cryptech.API.Models.Request
 
 import com.google.gson.annotations.SerializedName
 
-class LoginRequest(emailId: String, password: String) {
+class LoginRequest(mobile: String, password: String) {
 
-    @SerializedName("emailId")
-    val emailId: String = emailId
+    @SerializedName("mobile")
+    val mobile: String = mobile
 
     @SerializedName("password")
     val password: String = password

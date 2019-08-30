@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "badeurl"
+    private const val BASE_URL = "https://cryptechapi.herokuapp.com/"
 
     private var retrofit: Retrofit? = null
 

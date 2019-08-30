@@ -40,7 +40,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_bg"
-        android:hint="Email ID"
+        android:hint="Mobile Number"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:paddingStart="20dp"
@@ -54,6 +54,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <EditText
+            android:inputType="number"
+            android:maxLength="10"
             android:textColorHint="@color/colorPrimaryDark"
             android:id="@+id/email"
             android:layout_width="match_parent"

@@ -7,7 +7,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
+import com.ubertech.cryptech.API.Services.ApiClient
+import com.ubertech.cryptech.API.Services.ApiInterface
 import com.ubertech.cryptech.R
+import com.ubertech.cryptech.Utilities.TinyDB
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +25,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var wrong: LottieAnimationView
     private lateinit var answer: EditText
     private lateinit var submit: TextView
+
+    // Global data sources
+    private var api: ApiInterface? = null
+    private var db: TinyDB? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         wrong = findViewById(R.id.wrong)
         answer = findViewById(R.id.answer)
         submit = findViewById(R.id.submit)
+
+        // Initiating tinyDB
+        db = TinyDB(this@MainActivity)
+
+        // Initiating Retrofit API
+        api = ApiClient.client.create(ApiInterface::class.java)
+
 
     }
 }

@@ -12,7 +12,7 @@ interface ApiInterface {
 
 
     // Auth
-    @POST("login")
+    @POST("auth/login")
     fun requestLogin(@Body params: LoginRequest): Call<LoginResponse>
 
     @POST("register")
