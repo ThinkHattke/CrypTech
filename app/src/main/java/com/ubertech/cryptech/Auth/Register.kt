@@ -62,41 +62,16 @@ class Register : AppCompatActivity() {
 
         submit.setOnClickListener {
 
-            if(email.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter Email ID to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(name.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your Name to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(mobile.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your Mobile Number to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(password.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your Password to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(college.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your College Name to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(year.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your Year to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(section.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your Section to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(reg.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Register, "Enter your Registration Number to continue", Toast.LENGTH_SHORT).show()
-
-            } else {
-
-                api!!.requestRegister(RegistrationRequest(email.text.toString(),name.text.toString(), mobile.text.toString(),
+            when {
+                email.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter Email ID to continue", Toast.LENGTH_SHORT).show()
+                name.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Name to continue", Toast.LENGTH_SHORT).show()
+                mobile.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Mobile Number to continue", Toast.LENGTH_SHORT).show()
+                password.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Password to continue", Toast.LENGTH_SHORT).show()
+                college.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your College Name to continue", Toast.LENGTH_SHORT).show()
+                year.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Year to continue", Toast.LENGTH_SHORT).show()
+                section.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Section to continue", Toast.LENGTH_SHORT).show()
+                reg.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Registration Number to continue", Toast.LENGTH_SHORT).show()
+                else -> api!!.requestRegister(RegistrationRequest(email.text.toString(),name.text.toString(), mobile.text.toString(),
                         password.text.toString(), college.text.toString(),year.text.toString(), section.text.toString(),
                         reg.text.toString())).enqueue(object : retrofit2.Callback<RegistrationResponse>{
                     override fun onFailure(call: Call<RegistrationResponse>, t: Throwable) {
@@ -112,6 +87,7 @@ class Register : AppCompatActivity() {
                             db!!.putBoolean("logged",true)
 
                             startActivity(Intent(this@Register, Verify::class.java))
+                            finish()
 
 
                         } else {
@@ -125,7 +101,6 @@ class Register : AppCompatActivity() {
 
 
                 })
-
             }
 
         }

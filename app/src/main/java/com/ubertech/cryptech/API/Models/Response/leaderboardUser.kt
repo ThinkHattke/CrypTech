@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 class leaderboardUser {
 
-    @SerializedName("position")
-    val position: String? = null
+    @SerializedName("level")
+    val level: Int? = null
 
-    @SerializedName("name")
-    val name: String? = null
+    @SerializedName("full_name")
+    val full_name: String? = null
 
 }

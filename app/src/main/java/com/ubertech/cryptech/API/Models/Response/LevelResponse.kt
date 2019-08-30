@@ -4,10 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 class LevelResponse {
 
-    @SerializedName("url")
-    val url: String? = null
+    @SerializedName("image_url")
+    val image_url: String? = null
 
     @SerializedName("level")
-    val level: String? = null
+    val level: Int? = null
+
+    @SerializedName("hint")
+    val hint: String? = null
 
 }

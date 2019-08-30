@@ -2,9 +2,9 @@ package com.ubertech.cryptech.API.Models.Request
 
 import com.google.gson.annotations.SerializedName
 
-class VerifyRequest(code: String) {
+class VerifyRequest(secret: String) {
 
-    @SerializedName("code")
-    val code: String = code
+    @SerializedName("secret")
+    val secret: String = secret
 
 }

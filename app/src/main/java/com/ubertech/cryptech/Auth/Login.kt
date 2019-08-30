@@ -15,6 +15,7 @@ import com.ubertech.cryptech.API.Services.ApiInterface
 import com.ubertech.cryptech.Main.MainActivity
 import com.ubertech.cryptech.R
 import com.ubertech.cryptech.Utilities.TinyDB
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
@@ -52,11 +53,12 @@ class Login : AppCompatActivity() {
             if(verified) {
 
                 startActivity(Intent(this@Login, MainActivity::class.java))
+                finish()
 
             } else {
 
                 startActivity(Intent(this@Login, Verify::class.java))
-
+                finish()
 
             }
             
@@ -67,61 +69,51 @@ class Login : AppCompatActivity() {
 
         login.setOnClickListener {
 
-            if(email.text.isNullOrEmpty()) {
-
-                Toast.makeText(this@Login, "Enter your Email ID to continue", Toast.LENGTH_SHORT).show()
-
-            } else if(password.text.isNullOrBlank()) {
-
-                Toast.makeText(this@Login, "Enter your Password to continue", Toast.LENGTH_SHORT).show()
-
-            } else {
-
-                api!!.requestLogin(LoginRequest(email.text.toString(), password.text.toString()))
+            when {
+                email.text.isNullOrEmpty() -> Toast.makeText(this@Login, "Enter your Email ID to continue", Toast.LENGTH_SHORT).show()
+                password.text.isNullOrBlank() -> Toast.makeText(this@Login, "Enter your Password to continue", Toast.LENGTH_SHORT).show()
+                else -> api!!.requestLogin(LoginRequest(email.text.toString(), password.text.toString()))
                         .enqueue(object : retrofit2.Callback<LoginResponse>{
                             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                                                        Toast.makeText(this@Login, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
-
-
+                                Timber.e(t)
+                                Toast.makeText(this@Login, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
 
-                                if(response.isSuccessful) {
+                                when {
+                                    response.isSuccessful -> {
 
-                                    Toast.makeText(this@Login, "You are successfully logged in", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@Login, "You are successfully logged in", Toast.LENGTH_SHORT).show()
 
-                                    db!!.putString("jwt",response.body()!!.jwt!!)
-                                    db!!.putBoolean("logged",true)
-
-                                    if(response.body()!!.verified.equals("verified")) {
-
+                                        db!!.putString("jwt",response.body()!!.jwt!!)
+                                        db!!.putBoolean("logged",true)
                                         db!!.putBoolean("verified",true)
                                         startActivity(Intent(this@Login, MainActivity::class.java))
+                                        finish()
 
-                                    } else {
-
-                                        startActivity(Intent(this@Login, Verify::class.java))
                                     }
+                                    response.code() == 417 -> {
 
-                                }
+                                        db!!.putString("jwt",response.body()!!.jwt!!)
+                                        db!!.putBoolean("logged",true)
+                                        startActivity(Intent(this@Login, Verify::class.java))
+                                        finish()
 
-                                if(response.code() == 401) {
-
-                                    Toast.makeText(this@Login, "Invalid credentails", Toast.LENGTH_SHORT).show()
-
+                                    }
+                                    response.code() == 401 -> Toast.makeText(this@Login, "Invalid Credentials", Toast.LENGTH_SHORT).show()
                                 }
 
                             }
 
-
                         })
-
             }
 
         }
 
-        register.setOnClickListener { startActivity(Intent(this@Login, Register::class.java)) }
+        register.setOnClickListener {
+            startActivity(Intent(this@Login, Register::class.java))
+        }
 
     }
 

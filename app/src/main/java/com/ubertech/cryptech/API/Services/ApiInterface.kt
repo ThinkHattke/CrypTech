@@ -15,26 +15,23 @@ interface ApiInterface {
     @POST("auth/login")
     fun requestLogin(@Body params: LoginRequest): Call<LoginResponse>
 
-    @POST("register")
+    @POST("auth/register")
     fun requestRegister(@Body params: RegistrationRequest): Call<RegistrationResponse>
 
-    @POST("verify")
-    fun requestVerification(@Header("authorization") auth: String,
+    @POST("core/verify")
+    fun requestVerification(@Header("x-access-token") auth: String,
                             @Body params: VerifyRequest): Call<VerifyResponse>
 
 
     // Main features
-    @GET("level")
-    fun requestLevel(@Header("authorization") auth: String): Call<LevelResponse>
+    @GET("core/level")
+    fun requestLevel(@Header("x-access-token") auth: String): Call<LevelResponse>
 
-    @GET("hint")
-    fun requestHint(@Header("authorization") auth: String): Call<HintResponse>
+    @POST("level/submit")
+    fun submitAnswer(@Header("x-access-token") auth: String, @Body params: SubmitRequest): Call<VerifyResponse>
 
-    @POST("submit")
-    fun submitAnswer(@Header("authorization") auth: String, @Body params: SubmitRequest): Call<VerifyResponse>
-
-    @GET("leaderboard")
-    fun requestLeaderBoard(@Header("authorization") auth: String): Call<LeaderboardResponse>
+    @GET("core/leaderboards")
+    fun requestLeaderBoard(@Header("x-access-token") auth: String): Call<List<leaderboardUser>>
 
 
 }
