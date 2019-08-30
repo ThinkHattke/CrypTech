@@ -2,15 +2,15 @@ package com.ubertech.cryptech.API.Models.Request
 
 import com.google.gson.annotations.SerializedName
 
-class RegistrationRequest(emailId: String, name: String, mobile: String, password: String,
-                          college :String, year: String, section: String, reg: String) {
+class RegistrationRequest(email: String, full_name: String, mobile: String, password: String,
+                          college :String, year: String, section: String, registration_number: String) {
 
 
-    @SerializedName("emailId")
-    val emailId: String = emailId
+    @SerializedName("email")
+    val email: String = email
 
-    @SerializedName("name")
-    val name: String = name
+    @SerializedName("full_name")
+    val full_name: String = full_name
 
     @SerializedName("mobile")
     val mobile: String = mobile
@@ -27,7 +27,7 @@ class RegistrationRequest(emailId: String, name: String, mobile: String, passwor
     @SerializedName("section")
     val section: String = section
 
-    @SerializedName("reg")
-    val reg: String = reg
+    @SerializedName("registration_number")
+    val registration_number: String = registration_number
 
 }

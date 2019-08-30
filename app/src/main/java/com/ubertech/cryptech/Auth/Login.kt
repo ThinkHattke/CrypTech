@@ -43,6 +43,24 @@ class Login : AppCompatActivity() {
 
         // Initiating tinyDB
         db = TinyDB(this@Login)
+        
+        val verified = db!!.getBoolean("verified")
+        val logged = db!!.getBoolean("logged")
+        
+        if(logged) {
+            
+            if(verified) {
+
+                startActivity(Intent(this@Login, MainActivity::class.java))
+
+            } else {
+
+                startActivity(Intent(this@Login, Verify::class.java))
+
+
+            }
+            
+        }
 
         // Initiating Retrofit API
         api = ApiClient.client.create(ApiInterface::class.java)
@@ -62,8 +80,8 @@ class Login : AppCompatActivity() {
                 api!!.requestLogin(LoginRequest(email.text.toString(), password.text.toString()))
                         .enqueue(object : retrofit2.Callback<LoginResponse>{
                             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                                Timber.e(t)
-                                Toast.makeText(this@Login, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(this@Login, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
+
 
                             }
 
@@ -74,15 +92,23 @@ class Login : AppCompatActivity() {
                                     Toast.makeText(this@Login, "You are successfully logged in", Toast.LENGTH_SHORT).show()
 
                                     db!!.putString("jwt",response.body()!!.jwt!!)
+                                    db!!.putBoolean("logged",true)
 
                                     if(response.body()!!.verified.equals("verified")) {
 
+                                        db!!.putBoolean("verified",true)
                                         startActivity(Intent(this@Login, MainActivity::class.java))
 
                                     } else {
 
                                         startActivity(Intent(this@Login, Verify::class.java))
                                     }
+
+                                }
+
+                                if(response.code() == 401) {
+
+                                    Toast.makeText(this@Login, "Invalid credentails", Toast.LENGTH_SHORT).show()
 
                                 }
 
