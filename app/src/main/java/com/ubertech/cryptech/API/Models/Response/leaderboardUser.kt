@@ -1,4 +1,4 @@
-package com.ubertech.cryptech.API.Response
+package com.ubertech.cryptech.API.Models.Response
 
 import com.google.gson.annotations.SerializedName
 
