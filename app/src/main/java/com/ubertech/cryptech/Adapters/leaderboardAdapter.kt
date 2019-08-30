@@ -44,8 +44,8 @@ class leaderboardAdapter (context: Context?) : RecyclerView.Adapter<leaderboardA
         //Fetching Data
         val user = users[position]
 
-        holder.position!!.text = user.position
-        holder.name!!.text = user.name
+        holder.position!!.text = user.level.toString()
+        holder.name!!.text = user.full_name
 
     }
 

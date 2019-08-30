@@ -175,7 +175,6 @@ class MainActivity : AppCompatActivity() {
     private fun setData() {
 
         val url = db!!.getString("url")
-        val Hint = db!!.getString("hint")
         val Level = db!!.getString("level")
 
         hint.isClickable = true

@@ -69,12 +69,15 @@ class Login : AppCompatActivity() {
 
         login.setOnClickListener {
 
+            login.isClickable = false
+
             when {
                 email.text.isNullOrEmpty() -> Toast.makeText(this@Login, "Enter your Email ID to continue", Toast.LENGTH_SHORT).show()
                 password.text.isNullOrBlank() -> Toast.makeText(this@Login, "Enter your Password to continue", Toast.LENGTH_SHORT).show()
                 else -> api!!.requestLogin(LoginRequest(email.text.toString(), password.text.toString()))
                         .enqueue(object : retrofit2.Callback<LoginResponse>{
                             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                                login.isClickable = true
                                 Timber.e(t)
                                 Toast.makeText(this@Login, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
                             }
@@ -83,6 +86,8 @@ class Login : AppCompatActivity() {
 
                                 when {
                                     response.isSuccessful -> {
+
+                                        login.isClickable = true
 
                                         Toast.makeText(this@Login, "You are successfully logged in", Toast.LENGTH_SHORT).show()
 
@@ -95,13 +100,18 @@ class Login : AppCompatActivity() {
                                     }
                                     response.code() == 417 -> {
 
+                                        login.isClickable = true
+
                                         db!!.putString("jwt",response.body()!!.jwt!!)
                                         db!!.putBoolean("logged",true)
                                         startActivity(Intent(this@Login, Verify::class.java))
                                         finish()
 
                                     }
-                                    response.code() == 401 -> Toast.makeText(this@Login, "Invalid Credentials", Toast.LENGTH_SHORT).show()
+                                    response.code() == 401 -> {
+                                        login.isClickable = true
+                                        Toast.makeText(this@Login, "Invalid Credentials", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
 
                             }

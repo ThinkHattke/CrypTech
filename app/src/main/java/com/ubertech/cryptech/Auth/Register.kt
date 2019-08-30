@@ -61,7 +61,7 @@ class Register : AppCompatActivity() {
         back.setOnClickListener { onBackPressed() }
 
         submit.setOnClickListener {
-
+            submit.isClickable = false
             when {
                 email.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter Email ID to continue", Toast.LENGTH_SHORT).show()
                 name.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Name to continue", Toast.LENGTH_SHORT).show()
@@ -76,12 +76,15 @@ class Register : AppCompatActivity() {
                         reg.text.toString())).enqueue(object : retrofit2.Callback<RegistrationResponse>{
                     override fun onFailure(call: Call<RegistrationResponse>, t: Throwable) {
                         Timber.e(t)
+                        submit.isClickable = true
                         Toast.makeText(this@Register, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onResponse(call: Call<RegistrationResponse>, response: Response<RegistrationResponse>) {
 
                         if(response.isSuccessful) {
+
+                            submit.isClickable = true
 
                             db!!.putString("jwt", response.body()!!.jwt!!)
                             db!!.putBoolean("logged",true)
@@ -92,6 +95,7 @@ class Register : AppCompatActivity() {
 
                         } else {
 
+                            submit.isClickable = true
                             Toast.makeText(this@Register, "Invalid data", Toast.LENGTH_SHORT).show()
 
 
