@@ -14,7 +14,7 @@ class leaderboardAdapter (context: Context?) : RecyclerView.Adapter<leaderboardA
 
 
     //Global Data
-    private var users: MutableList<leaderboardUser> = ArrayList()
+    private var users: List<leaderboardUser> = ArrayList()
     private var inflater: LayoutInflater? = null
     lateinit var view: View
     lateinit var holder: MyViewHolder
@@ -50,12 +50,10 @@ class leaderboardAdapter (context: Context?) : RecyclerView.Adapter<leaderboardA
     }
 
     //Setting the arraylist
-    fun setListContent(users: MutableList<leaderboardUser>) {
-
+    fun setListContent(users: List<leaderboardUser>) {
 
         this.users = users
         notifyItemRangeChanged(0, users.size)
-
 
     }
 

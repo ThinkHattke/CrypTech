@@ -27,7 +27,7 @@ interface ApiInterface {
     @GET("core/level")
     fun requestLevel(@Header("x-access-token") auth: String): Call<LevelResponse>
 
-    @POST("level/submit")
+    @POST("core/level/submit")
     fun submitAnswer(@Header("x-access-token") auth: String, @Body params: SubmitRequest): Call<VerifyResponse>
 
     @GET("core/leaderboards")

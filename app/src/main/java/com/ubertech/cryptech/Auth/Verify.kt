@@ -1,10 +1,13 @@
 package com.ubertech.cryptech.Auth
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.SparseArray
+import android.view.View
 import android.widget.Toast
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.vision.barcode.Barcode
 import com.ubertech.cryptech.API.Models.Request.VerifyRequest
 import com.ubertech.cryptech.API.Models.Response.VerifyResponse
@@ -26,12 +29,16 @@ class Verify : AppCompatActivity(), BarcodeReader.BarcodeReaderListener {
     private var api: ApiInterface? = null
     private var db: TinyDB? = null
 
+    lateinit var loader: LottieAnimationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify)
 
         // Initiating tinyDB
         db = TinyDB(this@Verify)
+
+        loader = findViewById(R.id.loader)
 
         // Initiating Retrofit API
         api = ApiClient.client.create(ApiInterface::class.java)
@@ -57,17 +64,19 @@ class Verify : AppCompatActivity(), BarcodeReader.BarcodeReaderListener {
         // ticket details activity by passing barcode
         Timber.e("Values is: ${barcode!!.displayValue}")
 
+        loader.visibility = View.VISIBLE
+
         api!!.requestVerification(db!!.getString("jwt"), VerifyRequest(barcode.displayValue!!))
                 .enqueue(object: retrofit2.Callback<VerifyResponse>{
                     override fun onFailure(call: Call<VerifyResponse>, t: Throwable) {
-
+                        loader.visibility = View.GONE
                         Timber.e(t)
                         Toast.makeText(this@Verify, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
 
                     }
 
                     override fun onResponse(call: Call<VerifyResponse>, response: Response<VerifyResponse>) {
-
+                        loader.visibility = View.GONE
                         when {
                             response.isSuccessful -> {
 
@@ -85,6 +94,10 @@ class Verify : AppCompatActivity(), BarcodeReader.BarcodeReaderListener {
 
                 })
         
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     override fun onScanError(errorMessage: String?) {

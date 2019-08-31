@@ -2,10 +2,12 @@ package com.ubertech.cryptech.Main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.ubertech.cryptech.API.Models.Response.LeaderboardResponse
 import com.ubertech.cryptech.API.Models.Response.leaderboardUser
 import com.ubertech.cryptech.API.Services.ApiClient
@@ -27,6 +29,8 @@ class LeaderBoard : AppCompatActivity() {
     private var api: ApiInterface? = null
     private var db: TinyDB? = null
 
+    private lateinit var loader: LottieAnimationView
+
     // Local data
     private val users = arrayListOf<leaderboardUser>()
     var adapter: leaderboardAdapter? = null
@@ -43,21 +47,26 @@ class LeaderBoard : AppCompatActivity() {
 
         back = findViewById(R.id.back)
         recyclerView = findViewById(R.id.recyclerView)
+        loader = findViewById(R.id.loader)
 
         back.setOnClickListener { onBackPressed() }
+
+        loader.visibility = View.VISIBLE
 
         api!!.requestLeaderBoard(db!!.getString("jwt")).enqueue(object :retrofit2.Callback<List<leaderboardUser>> {
             override fun onFailure(call: Call<List<leaderboardUser>>, t: Throwable) {
                 Timber.e(t)
+                loader.visibility = View.GONE
                 Toast.makeText(this@LeaderBoard, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<List<leaderboardUser>>, response: Response<List<leaderboardUser>>) {
-
+                loader.visibility = View.GONE
                 if(response.isSuccessful) {
 
                     val layoutManager = LinearLayoutManager(this@LeaderBoard)
                     users.addAll(response.body()!!)
+                    adapter = leaderboardAdapter(this@LeaderBoard)
                     adapter!!.setListContent(users)
                     recyclerView.layoutManager = layoutManager
                     recyclerView.adapter = adapter

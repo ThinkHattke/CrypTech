@@ -13,4 +13,7 @@ class LevelResponse {
     @SerializedName("hint")
     val hint: String? = null
 
+    @SerializedName("logout")
+    val logout: String? = null
+
 }

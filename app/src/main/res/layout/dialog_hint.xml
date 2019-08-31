@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/title"
             android:textStyle="bold"
-            android:textSize="17sp"
+            android:textSize="@dimen/_15sdp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -52,6 +52,7 @@
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:id="@+id/value"
+            android:textSize="@dimen/_15sdp"
             android:paddingStart="25dp"
             android:paddingEnd="25dp"
             android:gravity="center"
