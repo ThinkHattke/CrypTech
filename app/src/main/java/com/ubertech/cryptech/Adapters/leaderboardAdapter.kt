@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ubertech.cryptech.API.Response.leaderboardUser
+import com.ubertech.cryptech.API.Models.Response.leaderboardUser
 import com.ubertech.cryptech.R
 import java.util.ArrayList
 
@@ -14,7 +14,7 @@ class leaderboardAdapter (context: Context?) : RecyclerView.Adapter<leaderboardA
 
 
     //Global Data
-    private var users: MutableList<leaderboardUser> = ArrayList()
+    private var users: List<leaderboardUser> = ArrayList()
     private var inflater: LayoutInflater? = null
     lateinit var view: View
     lateinit var holder: MyViewHolder
@@ -44,18 +44,16 @@ class leaderboardAdapter (context: Context?) : RecyclerView.Adapter<leaderboardA
         //Fetching Data
         val user = users[position]
 
-        holder.position!!.text = user.position
-        holder.name!!.text = user.name
+        holder.position!!.text = user.level.toString()
+        holder.name!!.text = user.full_name
 
     }
 
     //Setting the arraylist
-    fun setListContent(users: MutableList<leaderboardUser>) {
-
+    fun setListContent(users: List<leaderboardUser>) {
 
         this.users = users
         notifyItemRangeChanged(0, users.size)
-
 
     }
 

@@ -1,11 +1,21 @@
 package com.ubertech.cryptech.Auth
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.View
+import android.widget.*
+import com.airbnb.lottie.LottieAnimationView
+import com.ubertech.cryptech.API.Models.Request.RegistrationRequest
+import com.ubertech.cryptech.API.Models.Response.RegistrationResponse
+import com.ubertech.cryptech.API.Services.ApiClient
+import com.ubertech.cryptech.API.Services.ApiInterface
+import com.ubertech.cryptech.Main.MainActivity
 import com.ubertech.cryptech.R
+import com.ubertech.cryptech.Utilities.TinyDB
+import retrofit2.Call
+import retrofit2.Response
+import timber.log.Timber
 
 class Register : AppCompatActivity() {
 
@@ -20,6 +30,11 @@ class Register : AppCompatActivity() {
     lateinit var section: EditText
     lateinit var reg: EditText
     lateinit var submit: ImageView
+    lateinit var loader: RelativeLayout
+
+    // Global data sources
+    private var api: ApiInterface? = null
+    private var db: TinyDB? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,19 +45,78 @@ class Register : AppCompatActivity() {
         email = findViewById(R.id.email)
         name = findViewById(R.id.name)
         mobile = findViewById(R.id.mobile)
-        email = findViewById(R.id.email)
         password = findViewById(R.id.password)
         college = findViewById(R.id.college)
         year = findViewById(R.id.year)
         section = findViewById(R.id.section)
         reg = findViewById(R.id.reg)
         submit = findViewById(R.id.submit)
+        loader = findViewById(R.id.loader)
+
+        // Initiating tinyDB
+        db = TinyDB(this@Register)
+
+        // Initiating Retrofit API
+        api = ApiClient.client.create(ApiInterface::class.java)
 
         back.setOnClickListener { onBackPressed() }
+
+        submit.setOnClickListener {
+            when {
+                email.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter Email ID to continue", Toast.LENGTH_SHORT).show()
+                name.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Name to continue", Toast.LENGTH_SHORT).show()
+                mobile.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Mobile Number to continue", Toast.LENGTH_SHORT).show()
+                password.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Password to continue", Toast.LENGTH_SHORT).show()
+                college.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your College Name to continue", Toast.LENGTH_SHORT).show()
+                year.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Year to continue", Toast.LENGTH_SHORT).show()
+                section.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Section to continue", Toast.LENGTH_SHORT).show()
+                reg.text.isNullOrEmpty() -> Toast.makeText(this@Register, "Enter your Registration Number to continue", Toast.LENGTH_SHORT).show()
+                else -> {
+                    submit.isClickable = false
+                    loader.visibility = View.VISIBLE
+                    api!!.requestRegister(RegistrationRequest(email.text.toString(), name.text.toString(), mobile.text.toString(),
+                            password.text.toString(), college.text.toString(), year.text.toString(), section.text.toString(),
+                            reg.text.toString())).enqueue(object : retrofit2.Callback<RegistrationResponse> {
+                        override fun onFailure(call: Call<RegistrationResponse>, t: Throwable) {
+                            Timber.e(t)
+                            submit.isClickable = true
+                            loader.visibility = View.GONE
+                            Toast.makeText(this@Register, "Something Wen't wrong", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onResponse(call: Call<RegistrationResponse>, response: Response<RegistrationResponse>) {
+
+                            loader.visibility = View.GONE
+                            submit.isClickable = true
+
+                            if (response.isSuccessful) {
+
+                                Timber.e(response.body()!!.jwt!!)
+                                db!!.putString("jwt", response.body()!!.jwt!!)
+                                db!!.putBoolean("logged", true)
+
+                                startActivity(Intent(this@Register, Verify::class.java))
+                                finish()
+
+                            } else {
+
+                                Toast.makeText(this@Register, "Invalid data", Toast.LENGTH_SHORT).show()
+
+                            }
+
+                        }
+
+
+                    })
+                }
+            }
+
+        }
 
     }
 
     override fun onBackPressed() {
+        startActivity(Intent(this@Register, Register::class.java))
         finish()
     }
 
